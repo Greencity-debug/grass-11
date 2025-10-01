@@ -7,7 +7,6 @@ import eventBus from '@/lib/eventBus';
 
 export default function Map() {
   const apiKey = process.env.NEXT_PUBLIC_YANDEX_MAPS_API_KEY;
-  // ИЗМЕНЕНО: Используем 'undefined' вместо 'null' для полной совместимости типов
   const mapRef = useRef<ymaps.Map | undefined>(undefined);
 
   const handleFullscreenExit = () => {
@@ -42,7 +41,8 @@ export default function Map() {
         width="100%"
         height="100%"
         instanceRef={mapRef}
-        onLoad={(ymapsInstance) => {
+        // ИЗМЕНЕНО: Функция стала асинхронной (async)
+        onLoad={async (ymapsInstance) => {
           if (mapRef.current) {
             const map = mapRef.current;
             
@@ -52,8 +52,11 @@ export default function Map() {
             map.controls.add(fullscreenControl);
             fullscreenControl.events.add('fullscreenexit', handleFullscreenExit);
 
+            // ДОБАВЛЕНО: Явно дожидаемся, пока модуль 'editor' будет готов
+            await ymapsInstance.modules.require(['editor']);
+
+            // Теперь, когда мы уверены, что редактор готов, подписываемся на события
             eventBus.on('mode-change', (newMode) => {
-              if (!map.editor) return;
               if (newMode === 'draw_polygon') {
                 map.editor.startDrawing('polygon');
               } else {
