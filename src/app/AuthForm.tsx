@@ -25,13 +25,14 @@ export default function AuthForm() {
   const handleSignIn = async () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) setError(error.message)
-    else location.reload() // Перезагружаем страницу, сервер сам сделает редирект
+    else location.reload()
   }
 
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl">Вход</CardTitle>
+        {/* ИЗМЕНЕНО: Добавлен класс text-primary */}
+        <CardTitle className="text-2xl text-primary">Вход</CardTitle>
         <CardDescription>Введите ваш email и пароль.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
@@ -50,5 +51,5 @@ export default function AuthForm() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
