@@ -1,6 +1,6 @@
 // src/lib/eventBus.ts
 
-type EventHandler = (data?: any) => void;
+type EventHandler = (data?: unknown) => void;
 
 class EventBus {
   private events: { [key: string]: EventHandler[] };
@@ -16,7 +16,7 @@ class EventBus {
     this.events[event].push(handler);
   }
 
-  emit(event: string, data?: any): void {
+  emit(event: string, data?: unknown): void {
     if (this.events[event]) {
       this.events[event].forEach(handler => handler(data));
     }
