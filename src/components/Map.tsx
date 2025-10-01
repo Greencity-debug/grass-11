@@ -7,8 +7,8 @@ import eventBus from '@/lib/eventBus';
 
 export default function Map() {
   const apiKey = process.env.NEXT_PUBLIC_YANDEX_MAPS_API_KEY;
-  // ИЗМЕНЕНО: Заменяем 'any' на конкретный тип карты 'ymaps.Map'
-  const mapRef = useRef<ymaps.Map | null>(null);
+  // ИЗМЕНЕНО: Используем 'undefined' вместо 'null' для полной совместимости типов
+  const mapRef = useRef<ymaps.Map | undefined>(undefined);
 
   const handleFullscreenExit = () => {
     if (mapRef.current) {
